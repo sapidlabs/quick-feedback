@@ -1,7 +1,11 @@
 library quick_feedback;
 
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quick_feedback/ios/cupertino_feedback_dialog.dart';
+import 'package:quick_feedback/android/material_feedback_dialog.dart';
 
 class QuickFeedback extends StatefulWidget {
   // String title of the feedback dialog
@@ -44,8 +48,8 @@ class QuickFeedback extends StatefulWidget {
 }
 
 class _QuickFeedbackState extends State<QuickFeedback> {
-  Icon _currentFace = Icon(FontAwesomeIcons.smile);
   int _rating;
+  Icon _currentFace = Icon(FontAwesomeIcons.smile);
   TextEditingController textEditor = TextEditingController();
 
   @override
@@ -59,46 +63,35 @@ class _QuickFeedbackState extends State<QuickFeedback> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Text(widget.title),
-          AnimatedSwitcher(
-            duration: Duration(milliseconds: 100),
-            child: _currentFace,
-          ),
-        ],
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: _buildStars(),
-          ),
-          if (widget.showTextBox) _showTextBox(),
-        ],
-      ),
-      actions: [
-        FlatButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            widget.onAskLaterCallback();
-          },
-          child: Text(widget.askLaterText),
+    List<Widget> _stars = _buildStars();
+    if (Platform.isIOS) {
+      return CupertinoFeedbackDialog(
+        stars: _stars,
+        widget: widget,
+        rating: _rating,
+        currentFace: _currentFace,
+        feedbackEditingController: textEditor,
+        feedbackTextBox: _feedbackTextBox(),
+      );
+    } else if (Platform.isAndroid) {
+      return MaterialFeedbackDialog(
+        stars: _stars,
+        widget: widget,
+        rating: _rating,
+        currentFace: _currentFace,
+        feedbackEditingController: textEditor,
+        feedbackTextBox: _feedbackTextBox(),
+      );
+    } else {
+      return Container(
+        child: Center(
+          child: Text('Only Supported for Android and iOS.'),
         ),
-        FlatButton(
-          onPressed: () => widget.onSubmitCallback(
-              {'rating': _rating, 'feedback': textEditor.text}),
-          child: Text(widget.submitText),
-        )
-      ],
-    );
+      );
+    }
   }
 
-  Widget _showTextBox() {
+  Widget _feedbackTextBox() {
     return TextField(
       controller: textEditor,
       decoration: InputDecoration(
@@ -140,18 +133,20 @@ class _QuickFeedbackState extends State<QuickFeedback> {
     List<Widget> buttons = [];
 
     for (int rateValue = 1; rateValue <= 5; rateValue++) {
-      final starRatingButton = IconButton(
-        icon: Icon(
-          _rating >= rateValue ? Icons.star : Icons.star_border,
-          color: Theme.of(context).accentColor,
-          size: 35,
+      final starRatingButton = Expanded(
+        child: IconButton(
+          icon: Icon(
+            _rating >= rateValue ? Icons.star : Icons.star_border,
+            color: Theme.of(context).accentColor,
+            size: 35,
+          ),
+          onPressed: () {
+            setState(() {
+              _rating = rateValue;
+            });
+            _iconAsPerRating();
+          },
         ),
-        onPressed: () {
-          setState(() {
-            _rating = rateValue;
-          });
-          _iconAsPerRating();
-        },
       );
       buttons.add(starRatingButton);
     }
