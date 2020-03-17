@@ -9,9 +9,19 @@ class MyApp extends StatelessWidget {
       context: context,
       builder: (context) {
         return QuickFeedback(
-          onAskLaterCallback: () => print('ask later'),
-          title: 'Leave a feedback',
-          onSubmitCallback: (feedback) => print('$feedback'),
+          title: 'Leave a feedback', // Title of dialog
+          showTextBox: true, // default false
+          textBoxHint:
+              'Share your feedback', // Feedback text field hint text default: Tell us more
+          submitText: 'SUBMIT', // submit button text default: SUBMIT
+          onSubmitCallback: (feedback) {
+            print('$feedback'); // map { rating: 2, feedback: 'some feedback' }
+            Navigator.of(context).pop();
+          },
+          askLaterText: 'ASK LATER',
+          onAskLaterCallback: () {
+            print('Do something on ask later click');
+          },
         );
       },
     );
