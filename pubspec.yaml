@@ -1,8 +1,8 @@
 name: quick_feedback
-description: A new Flutter package project.
-version: 0.0.1
-author:
-homepage:
+description: Quick feedback allows to take feedback from users, also provides some customizations as required. Automatic show feedback dialog of respective platform.
+version: 0.1.0
+author: Abhishek<abhishek@sapidlabs.com>
+homepage: 
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -15,9 +15,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
