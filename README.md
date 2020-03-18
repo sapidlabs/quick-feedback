@@ -2,6 +2,8 @@
 
 Quick feedback lets your android and ios app to collect feedback from yours with ease of implementation and with customizations options.
 
+Quick feedback works for both Android and IOS.
+
 # Here how it looks
 
 ![Android Quick Feedback](https://raw.githubusercontent.com/sapidlabs/quick-feedback/master/screenshots/QuickFeedback-Android.png "Android Quick Feedback")
@@ -58,7 +60,7 @@ Placeholder text or hint text within the feedback text box.
 Optional, default is `SUBMIT`.
 
 5. #### onSubmitCallback
-Required, must be a function.
+Required, must be a function, with one parameter which gets a map of `{ rating: Int, feedback: String }` see example.
 
 6. #### askLaterText
 Optional, default: `ASK ME LATER`
