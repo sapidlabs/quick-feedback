@@ -1,10 +1,10 @@
 name: quick_feedback
 description: Quick feedback allows to take feedback from users, also provides some customizations as required. Automatic show feedback dialog of respective platform.
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/sapidlabs/quick-feedback
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.4.0 <3.0.0"
 
 dependencies:
   flutter:
